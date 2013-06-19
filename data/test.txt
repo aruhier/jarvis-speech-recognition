@@ -1,0 +1,4 @@
+Bonjour : {
+    req=Bonjour Jarvis
+    action=print("Bonjour Monsieur")
+}
