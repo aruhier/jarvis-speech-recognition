@@ -23,7 +23,13 @@ def checkData(aliasFile):
         bo = line.find('{')
         bc = line.find('}')
 
-        if checkReqAction :
+        if bc != -1 :
+            error = (tempBracket == 0)
+            error = error or not action or not req
+            tempBracket = 0
+            checkReqAction = False
+
+        elif checkReqAction :
             error = action and re.match("^\s*action=", line)
             action = action or bool(re.match("^\s*action=", line))
             req = req or bool(re.match("^\s*req=", line))
@@ -32,12 +38,6 @@ def checkData(aliasFile):
             error = (tempBracket == 1)
             tempBracket = 1
             checkReqAction = True
-
-        elif bc != -1 :
-            error = (tempBracket == 0)
-            error = error or not action or not req
-            tempBracket = 0
-            checkReqAction = False
 
         line = source.readline()
         currentLineNb += 1
