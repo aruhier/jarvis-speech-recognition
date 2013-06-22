@@ -54,11 +54,10 @@ def search(request, aliasFile):
 
         if tempSearch and request:
             tempAction = ""
-            line = source.readline()
             while not tempAction and line and line.find("}") == -1:
-                tempAction = re.match("^\s*action=", line)
-                action = line.rstrip('\t')[len(tempAction.group(0)):]
                 line = source.readline()
+                tempAction = re.match("^\s*action=", line)
+            action = line.rstrip('\t')[len(tempAction.group(0)):]
 
         else :
             line = source.readline()
@@ -78,4 +77,4 @@ def main(request):
     for aliasFile in aliasFiles:
         search(request, aliasFile)
 
-main("Bonjour Jarvis")
+main("Salut Jarvis")
