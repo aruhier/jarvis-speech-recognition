@@ -49,8 +49,8 @@ def search(request, aliasFile):
             tempAction = ""
             line = source.readline()
             while not tempAction and line and line.find("}") == -1:
-                tempAction = re.match("/S^action=", line)
-                action = line.rstrip('\t')[len("    action="):]
+                tempAction = re.match("^\s*action=", line)
+                action = line.rstrip('\t')[len(tempAction.group(0)):]
                 line = source.readline()
 
         else :
