@@ -13,20 +13,32 @@ def checkData(aliasFile):
     source = open(aliasFile, "r")
     line = source.readline()
     error = False
+    checkReqAction = False
+    action = False
+    req = False
     tempBracket = 0
     currentLineNb = 1
 
-    while line and not error:
+    while line and not error :
         bo = line.find('{')
-        bf = line.find('}')
+        bc = line.find('}')
 
-        if bo != -1:
+        if checkReqAction :
+            error = action and re.match("^\s*action=", line)
+            action = action or bool(re.match("^\s*action=", line))
+            req = req or bool(re.match("^\s*req=", line))
+
+        elif bo != -1 :
             error = (tempBracket == 1)
             tempBracket = 1
+            checkReqAction = True
 
-        elif bf != -1:
+        elif bc != -1 :
             error = (tempBracket == 0)
+            error = error or not action or not req
             tempBracket = 0
+            checkReqAction = False
+
         line = source.readline()
         currentLineNb += 1
 
@@ -41,7 +53,7 @@ def checkData(aliasFile):
 # Search the request in the data file sent in parameter
 
 def search(request, aliasFile):
-    if checkData(aliasFile):
+    if checkData(aliasFile) :
         return -1
 
     source = open(aliasFile, "r")
@@ -52,9 +64,9 @@ def search(request, aliasFile):
     while not tempSearch and line:
         tempSearch = re.match("^\s*req=" + request, line)
 
-        if tempSearch and request:
+        if tempSearch and request :
             tempAction = ""
-            while not tempAction and line and line.find("}") == -1:
+            while not tempAction and line and line.find("}") == -1 :
                 line = source.readline()
                 tempAction = re.match("^\s*action=", line)
             action = line.rstrip('\t')[len(tempAction.group(0)):]
