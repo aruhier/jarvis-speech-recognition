@@ -4,46 +4,20 @@
 import glob
 import os
 import re
+import configparser
 
 ## CheckData(fileName)
 #
 # Check if the file doesn't contain any error
 
 def checkData(aliasFile):
-    source = open(aliasFile, "r")
-    line = source.readline()
     error = False
-    checkReqAction = False
-    action = False
-    req = False
-    tempBracket = 0
-    currentLineNb = 1
+    config = configparser.ConfigParser(strict = True)
+    config.read(aliasFile)
 
-    while line and not error :
-        bo = line.find('{')
-        bc = line.find('}')
-
-        if bc != -1 :
-            error = (tempBracket == 0)
-            error = error or not action or not req
-            tempBracket = 0
-            checkReqAction = False
-
-        elif checkReqAction :
-            error = action and re.match("^\s*action=", line)
-            action = action or bool(re.match("^\s*action=", line))
-            req = req or bool(re.match("^\s*req=", line))
-
-        elif bo != -1 :
-            error = (tempBracket == 1)
-            tempBracket = 1
-            checkReqAction = True
-
-        line = source.readline()
-        currentLineNb += 1
-
-    if error:
-        print("Error in file " + aliasFile + ", line %s.\n" %(currentLineNb-1))
+    for section in config.sections() :
+        error = error or not config.has_option(section, "action")
+        error = error or not config.has_option(section, "req1")
 
     return error
 
@@ -54,29 +28,22 @@ def checkData(aliasFile):
 
 def search(request, aliasFile):
     if checkData(aliasFile) :
+        print("Error")
         return -1
 
-    source = open(aliasFile, "r")
+    config = configparser.ConfigParser(strict = True)
+    config.read(aliasFile)
+
     tempSearch = ""
     action = ""
-    line = source.readline()
 
-    while not tempSearch and line:
-        tempSearch = re.match("^\s*req=" + request, line)
+    for section in config.sections() :
+        for req in config.options(section) :
+            if req.startswith('req') and config.get(section, req) == request :
+                action = config.get(section, "action")
 
-        if tempSearch and request :
-            tempAction = ""
-            while not tempAction and line and line.find("}") == -1 :
-                line = source.readline()
-                tempAction = re.match("^\s*action=", line)
-            action = line.rstrip('\t')[len(tempAction.group(0)):]
-
-        else :
-            line = source.readline()
-
-    if action:
+    if action :
         eval(action)
-    source.close()
 
 
 ## main(request)
