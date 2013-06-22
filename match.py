@@ -5,6 +5,10 @@ import glob
 import os
 import re
 
+## CheckData(fileName)
+#
+# Check if the file doesn't contain any error
+
 def checkData(aliasFile):
     source = open(aliasFile, "r")
     line = source.readline()
@@ -31,6 +35,10 @@ def checkData(aliasFile):
 
     return error
 
+
+## search(request_to_search, dataFileName)
+#
+# Search the request in the data file sent in parameter
 
 def search(request, aliasFile):
     if checkData(aliasFile):
@@ -59,6 +67,10 @@ def search(request, aliasFile):
         eval(action)
     source.close()
 
+
+## main(request)
+#
+# Main function, launches the request search
 
 def main(request):
     aliasFiles = glob.glob('data/*.txt')
