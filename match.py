@@ -8,7 +8,7 @@ import re
 def checkData(aliasFile):
     source = open(aliasFile, "r")
     line = source.readline()
-    error = 0
+    error = False
     tempBracket = 0
     currentLineNb = 1
 
@@ -28,9 +28,8 @@ def checkData(aliasFile):
 
     if error:
         print("Error in file " + aliasFile + ", line %s.\n" %(currentLineNb-1))
-        return True
 
-    return False
+    return error
 
 
 def search(request, aliasFile):
