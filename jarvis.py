@@ -4,4 +4,6 @@
 import configparser
 import match
 
-match.main("Salut Jarvis")
+while True :
+    request = input(" > ")
+    match.main(request)

@@ -39,12 +39,14 @@ def search(request, aliasFile):
 
     for section in config.sections() :
         for req in config.options(section) :
-            if req.startswith('req') and config.get(section, req) == request :
+            if req.startswith('req') and \
+               config.get(section, req).lower() == request.lower() :
                 action = str(config.get(section, "action"))
 
-    actions = action.split('\n')
-    for line in actions:
-        eval(line)
+    if action :
+        actions = action.split('\n')
+        for line in actions:
+            eval(line)
 
 
 ## main(request)
@@ -56,5 +58,3 @@ def main(request):
 
     for aliasFile in aliasFiles:
         search(request, aliasFile)
-
-main("Salut Jarvis")
