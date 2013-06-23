@@ -12,7 +12,7 @@ import configparser
 
 def checkData(aliasFile):
     error = False
-    config = configparser.ConfigParser(strict = True)
+    config = configparser.ConfigParser(strict = True, comment_prefixes=('#'))
     config.read(aliasFile)
 
     for section in config.sections() :
@@ -40,10 +40,11 @@ def search(request, aliasFile):
     for section in config.sections() :
         for req in config.options(section) :
             if req.startswith('req') and config.get(section, req) == request :
-                action = config.get(section, "action")
+                action = str(config.get(section, "action"))
 
-    if action :
-        eval(action)
+    actions = action.split('\n')
+    for line in actions:
+        eval(line)
 
 
 ## main(request)
