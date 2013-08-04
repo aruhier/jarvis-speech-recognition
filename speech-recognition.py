@@ -23,11 +23,10 @@ def decodeSpeech(wavfile):
     """
     Decodes a speech file
     """
-    temp = wavfile
     wavfile.seek(44)
     speechRec.decode_raw(wavfile)
     result = speechRec.get_hyp()
-    wavfile = temp
+    wavfile.seek(0,0)
 
     return result[0]
 
@@ -48,10 +47,6 @@ def on_vader_stop(ob, message):
     # get content of the file
     wavfile = file(WAVFILE, 'rb')
 
-    # empty file, to not reprocess
-    # next time
-    #open(WAVFILE, 'w').write('')
-
     #file is empty, continue to listen
     pipe.set_state(gst.STATE_PLAYING)
 
@@ -62,7 +57,6 @@ def on_vader_stop(ob, message):
         logging.error("An error occured...")
 
     file(WAVFILE, 'wb').write('')
-
 
 
 #the main pipeline
