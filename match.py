@@ -1,10 +1,10 @@
-#!/usr/bin/python3
+#!/usr/bin/python2
 # -*- coding: utf-8 -*-
 
 import glob
 import os
 import re
-import configparser
+import ConfigParser
 
 ## CheckData(fileName)
 #
@@ -12,7 +12,8 @@ import configparser
 
 def checkData(aliasFile):
     error = False
-    config = configparser.ConfigParser(strict = True, comment_prefixes=('#'))
+    #config = ConfigParser.ConfigParser(strict = True, comment_prefixes=('#'))
+    config = ConfigParser.ConfigParser()
     config.read(aliasFile)
 
     for section in config.sections() :
@@ -31,7 +32,8 @@ def search(request, aliasFile):
         print("Error")
         return -1
 
-    config = configparser.ConfigParser(strict = True)
+    # config = ConfigParser.ConfigParser(strict = True)
+    config = ConfigParser.ConfigParser()
     config.read(aliasFile)
 
     tempSearch = ""
@@ -46,7 +48,7 @@ def search(request, aliasFile):
     if action :
         actions = action.split('\n')
         for line in actions:
-            eval(line)
+            exec(line)
 
 
 ## main(request)

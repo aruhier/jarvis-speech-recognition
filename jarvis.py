@@ -4,5 +4,5 @@
 import match
 
 while True :
-    request = input(" > ")
+    request = raw_input(" > ")
     match.main(request)
