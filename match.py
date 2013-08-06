@@ -36,19 +36,26 @@ def search(request, aliasFile):
     config = ConfigParser.ConfigParser()
     config.read(aliasFile)
 
-    tempSearch = ""
     action = ""
+    module = ""
+    requestLower = request.lower()
 
     for section in config.sections() :
         for req in config.options(section) :
-            if req.startswith('req') and \
-               config.get(section, req).lower() == request.lower() :
-                action = str(config.get(section, "action"))
+            if req.startswith('req') :
+                found = True
+                for word in config.get(section, req).lower() :
+                    found = found and (requestLower.find(word) != -1)
+
+                if found :
+                    module = str(config.get(section, "import"))
+                    action = str(config.get(section, "action"))
+
+    if module :
+        exec("import " + module)
 
     if action :
-        actions = action.split('\n')
-        for line in actions:
-            exec(line)
+        exec(action)
 
 
 ## main(request)
