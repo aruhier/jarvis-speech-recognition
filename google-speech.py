@@ -1,7 +1,7 @@
 #!/usr/bin/python2
 # -*- coding: utf-8 -*-
 
-import sys,os
+import sys,os,time
 import gst,gtk
 import logging
 import urllib2
@@ -12,20 +12,6 @@ FLACFILE='/tmp/jarvis.flac'
 
 # to be clean on logs
 logging.getLogger().setLevel(logging.DEBUG)
-
-def decodeSpeech(flacfile):
-    """
-    Decodes a speech file
-    """
-    flacfile.seek(44)
-    speechRec.decode_raw(flacfile)
-    result = speechRec.get_hyp()
-    flacfile.seek(0,0)
-
-
-    print "Debug :"
-    print result
-    return result[0]
 
 def googleSpeech(flacfile):
     req = urllib2.Request('https://www.google.com/speech-api/v1/'
@@ -46,6 +32,7 @@ def on_vader_stop(ob, message):
     """ This function is launched when vader stopped to listen
     That happend when you stop to talk """
 
+    time.sleep(0.5)
     logging.debug("Processing...")
 
     # pause pipeline to not break our file
