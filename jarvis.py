@@ -4,5 +4,10 @@
 import match
 
 while True :
-    request = raw_input(" > ")
-    match.main(request)
+    try:
+        request = raw_input(" > ")
+    except KeyboardInterrupt:
+        break
+    match.search(request)
+
+print "\nBye !"

@@ -6,6 +6,7 @@ import gst,gtk
 import logging
 import urllib2
 import json
+import match
 
 # file where we record our voice (removed at end)
 FLACFILE='/tmp/jarvis.flac'
@@ -20,7 +21,7 @@ def googleSpeech(flacfile):
     res = urllib2.urlopen(req)
     resp = res.read()
     resp = json.loads(resp)
-    print resp['hypotheses'][0]['utterance']
+    return resp['hypotheses'][0]['utterance']
 
 
 def on_vader_start(ob, message):
@@ -42,7 +43,10 @@ def on_vader_stop(ob, message):
     flacfile = file(FLACFILE, 'r')
 
     try:
-        googleSpeech(flacfile)
+        result = googleSpeech(flacfile)
+        print result
+        if result.lower().find("jarvis") != -1 :
+            match.search(result)
     except:
         logging.error("An error occured...")
 

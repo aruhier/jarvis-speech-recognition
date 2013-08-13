@@ -27,7 +27,7 @@ def checkData(aliasFile):
 #
 # Search the request in the data file sent in parameter
 
-def search(request, aliasFile):
+def searchIn(request, aliasFile):
     if checkData(aliasFile) :
         print("Error")
         return -1
@@ -64,8 +64,8 @@ def search(request, aliasFile):
 #
 # Main function, launches the request search
 
-def main(request):
+def search(request):
     aliasFiles = glob.glob('data/*.txt')
 
     for aliasFile in aliasFiles:
-        search(request, aliasFile)
+        searchIn(request, aliasFile)
