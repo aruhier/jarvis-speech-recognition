@@ -6,6 +6,9 @@ import pocketsphinx as ps
 import sphinxbase
 import gst,gtk
 import logging
+import shutil
+import time
+import wave
 
 # file where we record our voice (removed at end)
 WAVFILE='/tmp/jarvis.wav'
@@ -19,14 +22,15 @@ dictd = "/usr/share/pocketsphinx/model/lm/fr_FR/frenchWords62K.dic"
 
 speechRec = ps.Decoder(hmm = hmmd, lm = lmd, dict = dictd)
 
-def decodeSpeech(wavfile):
+def decodeSpeech():
     """
     Decodes a speech file
     """
-    wavfile.seek(44)
-    speechRec.decode_raw(wavfile)
+    fh = open(WAVFILE, 'rb')
+    fh.seek(44)
+    speechRec.decode_raw(fh)
     result = speechRec.get_hyp()
-    wavfile.seek(0,0)
+    fh.close()
 
     return result[0]
 
@@ -44,19 +48,17 @@ def on_vader_stop(ob, message):
     # pause pipeline to not break our file
     pipe.set_state(gst.STATE_PAUSED)
 
-    # get content of the file
-    wavfile = file(WAVFILE, 'rb')
-
-    #file is empty, continue to listen
-    pipe.set_state(gst.STATE_PLAYING)
-
     try:
-        result = decodeSpeech(wavfile)
+        result = decodeSpeech()
         print(result)
     except:
         logging.error("An error occured...")
 
-    file(WAVFILE, 'wb').write('')
+    w = wave.open(WAVFILE, 'w')
+    w.setparams((1, 1, 16000, 0, 'NONE', 'not compressed'))
+    w.writeframes('h')
+    w.close()
+    pipe.set_state(gst.STATE_PLAYING)
 
 
 #the main pipeline
