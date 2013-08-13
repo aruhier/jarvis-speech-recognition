@@ -44,18 +44,20 @@ def search(request, aliasFile):
         for req in config.options(section) :
             if req.startswith('req') :
                 found = True
-                for word in config.get(section, req).lower() :
+                for word in config.get(section, req).lower().split() :
                     found = found and (requestLower.find(word) != -1)
-
                 if found :
                     module = str(config.get(section, "import"))
                     action = str(config.get(section, "action"))
 
     if module :
         exec("import " + module)
+        print("Module imported")
 
     if action :
         exec(action)
+        print(action)
+        print("Action set")
 
 
 ## main(request)
