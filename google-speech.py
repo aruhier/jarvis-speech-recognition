@@ -50,7 +50,7 @@ def on_vader_stop(ob, message):
     try:
         result = googleSpeech(flacfile)
         print result
-        send2jarvis(result)
+        jarvis = thread.start_new_thread(send2jarvis, (result, ))
     except:
         logging.error("An error occured...")
 
