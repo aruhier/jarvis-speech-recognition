@@ -7,6 +7,7 @@ import logging
 import urllib2
 import json
 import match
+import thread
 
 # file where we record our voice (removed at end)
 FLACFILE='/tmp/jarvis.flac'
@@ -14,14 +15,18 @@ FLACFILE='/tmp/jarvis.flac'
 # to be clean on logs
 logging.getLogger().setLevel(logging.DEBUG)
 
+def send2jarvis(request):
+    if request.lower().find("jarvis") != -1 :
+        match.search(request)
+
 def googleSpeech(flacfile):
     req = urllib2.Request('https://www.google.com/speech-api/v1/'
                           'recognize?client=chromium&lang=fr-FR&maxresults=10',
-                          open(FLACFILE, 'r').read(), {'Content-Type': 'audio/x-flac; rate=16000'})
+                          flacfile.read(), {'Content-Type': 'audio/x-flac; rate=16000'})
     res = urllib2.urlopen(req)
     resp = res.read()
     resp = json.loads(resp)
-    return resp['hypotheses'][0]['utterance']
+    return str(resp['hypotheses'][0]['utterance'])
 
 
 def on_vader_start(ob, message):
@@ -45,8 +50,7 @@ def on_vader_stop(ob, message):
     try:
         result = googleSpeech(flacfile)
         print result
-        if result.lower().find("jarvis") != -1 :
-            match.search(result)
+        send2jarvis(result)
     except:
         logging.error("An error occured...")
 
