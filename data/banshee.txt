@@ -1,0 +1,22 @@
+# Demo mode, play music
+
+[Play]
+req1=lecture
+req2=lectures
+import=actions.banshee as banshee
+action=banshee.play()
+
+
+[Pause]
+req1=pause
+req2=pauses
+req3=pose
+import=actions.banshee as banshee
+action=banshee.pause()
+
+
+[Music-test]
+req1=musique
+req5=musiques
+import=actions.banshee as banshee
+action=banshee.read("/media/data/Musiques/Flac/Muse/The 2nd Law/13 - The 2nd Law Isolated System.flac")
