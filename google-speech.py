@@ -7,7 +7,7 @@ import logging
 import urllib2
 import json
 import match
-import thread
+import threading
 
 # file where we record our voice (removed at end)
 FLACFILE='/tmp/jarvis.flac'
@@ -50,7 +50,9 @@ def on_vader_stop(ob, message):
     try:
         result = googleSpeech(flacfile)
         print result
-        jarvis = thread.start_new_thread(send2jarvis, (result, ))
+        jarvis = threading.Thread(None, send2jarvis, None, (result, ))
+        jarvis.start()
+        jarvis.join()
     except:
         logging.error("An error occured...")
 
