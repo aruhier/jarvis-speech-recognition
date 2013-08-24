@@ -4,19 +4,25 @@
 import os
 import dbus
 
+BUS = dbus.SessionBus()
 
-def play():
-    bus = dbus.SessionBus()
-    banshee = bus.get_object("org.bansheeproject.Banshee", "/org/bansheeproject/Banshee/PlayerEngine")
-    banshee.Play()
+def next() :
+    banshee = BUS.get_object("org.bansheeproject.Banshee", "/org/bansheeproject/Banshee/PlaybackController")
+    banshee.Next(True)
 
 def pause():
-    bus = dbus.SessionBus()
-    banshee = bus.get_object("org.bansheeproject.Banshee", "/org/bansheeproject/Banshee/PlayerEngine")
+    banshee = BUS.get_object("org.bansheeproject.Banshee", "/org/bansheeproject/Banshee/PlayerEngine")
     banshee.Pause()
 
+def play():
+    banshee = BUS.get_object("org.bansheeproject.Banshee", "/org/bansheeproject/Banshee/PlayerEngine")
+    banshee.Play()
+
+def previous() :
+    banshee = BUS.get_object("org.bansheeproject.Banshee", "/org/bansheeproject/Banshee/PlaybackController")
+    banshee.Previous(True)
+
 def read(music):
-    bus = dbus.SessionBus()
-    banshee = bus.get_object("org.bansheeproject.Banshee", "/org/bansheeproject/Banshee/PlayerEngine")
+    banshee = BUS.get_object("org.bansheeproject.Banshee", "/org/bansheeproject/Banshee/PlayerEngine")
     banshee.Open(music)
     banshee.Play()
