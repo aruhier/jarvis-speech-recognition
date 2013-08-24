@@ -38,7 +38,6 @@ def on_vader_stop(ob, message):
     """ This function is launched when vader stopped to listen
     That happend when you stop to talk """
 
-    time.sleep(0.5)
     logging.debug("Processing...")
 
     # pause pipeline to not break our file
@@ -63,7 +62,8 @@ def on_vader_stop(ob, message):
 
 
 #the main pipeline
-pipe = gst.parse_launch('autoaudiosrc ! vader auto_threshold=true name=vad '
+pipe = gst.parse_launch('autoaudiosrc ! '
+                        'vader auto_threshold=true run-length=' + str(pow(10,9)) + ' name=vad '
                         '! audioconvert ! audioresample ! '
                         'audio/x-raw-int,rate=16000 ! flacenc ! '
                         'filesink location=%s' % FLACFILE)
