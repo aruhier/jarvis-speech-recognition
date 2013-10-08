@@ -11,14 +11,15 @@ import ConfigParser
 # Check if the file doesn't contain any error
 
 def checkData(aliasFile):
-    error = False
     #config = ConfigParser.ConfigParser(strict = True, comment_prefixes=('#'))
     config = ConfigParser.ConfigParser()
     config.read(aliasFile)
 
     for section in config.sections() :
-        error = error or not config.has_option(section, "action")
+        error = not config.has_option(section, "action")
         error = error or not config.has_option(section, "req1")
+        if error:
+            break
 
     return error
 
@@ -29,7 +30,7 @@ def checkData(aliasFile):
 
 def searchIn(request, aliasFile):
     if checkData(aliasFile) :
-        print("Error")
+        print("Error in the database file : " + aliasFile)
         return -1
 
     # config = ConfigParser.ConfigParser(strict = True)
