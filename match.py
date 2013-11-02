@@ -2,20 +2,19 @@
 # -*- coding: utf-8 -*-
 
 import glob
-import os
-import re
 import ConfigParser
 
 ## CheckData(fileName)
 #
 # Check if the file doesn't contain any error
 
+
 def checkData(aliasFile):
     #config = ConfigParser.ConfigParser(strict = True, comment_prefixes=('#'))
     config = ConfigParser.ConfigParser()
     config.read(aliasFile)
 
-    for section in config.sections() :
+    for section in config.sections():
         error = not config.has_option(section, "action")
         error = error or not config.has_option(section, "req1")
         if error:
@@ -29,7 +28,7 @@ def checkData(aliasFile):
 # Search the request in the data file sent in parameter
 
 def searchIn(request, aliasFile):
-    if checkData(aliasFile) :
+    if checkData(aliasFile):
         print("Error in the database file : " + aliasFile)
         return -1
 
@@ -41,21 +40,21 @@ def searchIn(request, aliasFile):
     module = ""
     requestLower = request.lower()
 
-    for section in config.sections() :
-        for req in config.options(section) :
-            if req.startswith('req') :
+    for section in config.sections():
+        for req in config.options(section):
+            if req.startswith('req'):
                 found = True
-                for word in config.get(section, req).lower().split() :
+                for word in config.get(section, req).lower().split():
                     found = found and (requestLower.find(word) != -1)
-                if found :
+                if found:
                     module = str(config.get(section, "import"))
                     action = str(config.get(section, "action"))
 
-    if module :
+    if module:
         exec("import " + module)
         print("Module imported")
 
-    if action :
+    if action:
         exec(action)
         print(action)
         print("Action set")

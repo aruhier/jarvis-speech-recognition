@@ -1,8 +1,9 @@
 #!/usr/bin/python2
 # -*- coding: utf-8 -*-
 
-import sys,os,time
-import gst,gtk
+import os
+import gst
+import gtk
 import logging
 import urllib2
 import json
@@ -11,19 +12,22 @@ import threading
 import sys
 
 # file where we record our voice (removed at end)
-FLACFILE='/tmp/jarvis.flac'
+FLACFILE = '/tmp/jarvis.flac'
 
 # to be clean on logs
 logging.getLogger().setLevel(logging.DEBUG)
 
+
 def send2jarvis(request):
-    if request.lower().find("jarvis") != -1 :
+    if request.lower().find("jarvis") != -1:
         match.search(request)
+
 
 def googleSpeech(flacfile):
     req = urllib2.Request('https://www.google.com/speech-api/v1/'
                           'recognize?client=chromium&lang=fr-FR&maxresults=10',
-                          flacfile.read(), {'Content-Type': 'audio/x-flac; rate=16000'})
+                          flacfile.read(),
+                          {'Content-Type': 'audio/x-flac; rate=16000'})
     res = urllib2.urlopen(req)
     resp = res.read()
     resp = json.loads(resp)
@@ -34,6 +38,7 @@ def on_vader_start(ob, message):
     """ Just to be sure that vader has reconnized that you're speaking
     we set a trace """
     logging.debug("Listening...")
+
 
 def on_vader_stop(ob, message):
     """ This function is launched when vader stopped to listen
@@ -49,7 +54,7 @@ def on_vader_stop(ob, message):
 
     try:
         result = googleSpeech(flacfile)
-        print result
+        print(result)
         jarvis = threading.Thread(None, send2jarvis, None, (result, ))
         jarvis.start()
         jarvis.join()
@@ -63,7 +68,8 @@ def on_vader_stop(ob, message):
 
 #the main pipeline
 pipe = gst.parse_launch('autoaudiosrc ! '
-                        'vader auto_threshold=true run-length=' + str(pow(10,9)) + ' name=vad '
+                        'vader auto_threshold=true run-length=' +
+                        str(pow(10, 9)) + ' name=vad '
                         '! audioconvert ! audioresample ! '
                         'audio/x-raw-int,rate=16000 ! flacenc ! '
                         'filesink location=%s' % FLACFILE)

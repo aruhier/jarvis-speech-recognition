@@ -1,17 +1,15 @@
 #!/usr/bin/python2
 # -*- coding: utf-8 -*-
 
-import sys,os
+import os
 import pocketsphinx as ps
-import sphinxbase
-import gst,gtk
+import gst
+import gtk
 import logging
-import shutil
-import time
 import wave
 
 # file where we record our voice (removed at end)
-WAVFILE='/tmp/jarvis.wav'
+WAVFILE = '/tmp/jarvis.wav'
 
 # to be clean on logs
 logging.getLogger().setLevel(logging.DEBUG)
@@ -20,7 +18,8 @@ hmmd = "/usr/share/pocketsphinx/model/hmm/fr_FR/lium_french_f0"
 lmd = "/usr/share/pocketsphinx/model/lm/fr_FR/french3g62K.lm"
 dictd = "/usr/share/pocketsphinx/model/lm/fr_FR/frenchWords62K.dic"
 
-speechRec = ps.Decoder(hmm = hmmd, lm = lmd, dict = dictd)
+speechRec = ps.Decoder(hmm=hmmd, lm=lmd, dict=dictd)
+
 
 def decodeSpeech():
     """
@@ -34,10 +33,12 @@ def decodeSpeech():
 
     return result[0]
 
+
 def on_vader_start(ob, message):
     """ Just to be sure that vader has reconnized that you're speaking
     we set a trace """
     logging.debug("Listening...")
+
 
 def on_vader_stop(ob, message):
     """ This function is launched when vader stopped to listen

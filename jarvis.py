@@ -3,11 +3,11 @@
 
 import match
 
-while True :
+while True:
     try:
         request = raw_input(" > ")
     except KeyboardInterrupt:
         break
     match.search(request)
 
-print "\nBye !"
+print("\nBye !")
