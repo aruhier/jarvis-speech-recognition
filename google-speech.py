@@ -3,7 +3,7 @@
 
 import os
 import gst
-import gtk
+import gobject
 import logging
 import urllib2
 import json
@@ -55,12 +55,15 @@ def on_vader_stop(ob, message):
     try:
         result = googleSpeech(flacfile)
         print(result)
+        result = "Jarvis lecture"
         jarvis = threading.Thread(None, send2jarvis, None, (result, ))
         jarvis.start()
-        jarvis.join()
     except:
         logging.error("An error occured...")
 
+    result = "Jarvis lecture"
+    jarvis = threading.Thread(None, send2jarvis, None, (result, ))
+    jarvis.start()
     file(FLACFILE, 'w').write('')
     #file is empty, continue to listen
     pipe.set_state(gst.STATE_PLAYING)
@@ -91,10 +94,15 @@ try:
     # start the pipeline now
     pipe.set_state(gst.STATE_PLAYING)
     logging.info("Press CTRL+C to stop")
-    gtk.main()
+    loop = gobject.MainLoop()
+    gobject.threads_init()
+    context = loop.get_context()
+    loop.run()
+
 
 except KeyboardInterrupt:
     # stop pipeline
     pipe.set_state(gst.STATE_NULL)
     # remove our flac file
     os.remove(FLACFILE)
+    loop.quit()
