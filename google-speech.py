@@ -8,6 +8,7 @@ import urllib2
 import json
 import match
 import threading
+import sys
 
 # file where we record our voice (removed at end)
 FLACFILE='/tmp/jarvis.flac'
@@ -56,7 +57,6 @@ def on_vader_stop(ob, message):
         logging.error("An error occured...")
 
     file(FLACFILE, 'w').write('')
-
     #file is empty, continue to listen
     pipe.set_state(gst.STATE_PLAYING)
 
@@ -73,6 +73,13 @@ bus.add_signal_watch()
 vader = pipe.get_by_name('vad')
 vader.connect('vader-start', on_vader_start)
 vader.connect('vader-stop', on_vader_stop)
+
+loop = gobject.MainLoop()
+gobject.threads_init()
+context = loop.get_context()
+
+pipe.set_state(gst.STATE_PLAYING)
+logging.info("Press CTRL+C to stop")
 
 try:
     # start the pipeline now
