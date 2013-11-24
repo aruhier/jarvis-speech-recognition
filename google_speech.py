@@ -55,15 +55,11 @@ def on_vader_stop(ob, message):
     try:
         result = googleSpeech(flacfile)
         print(result)
-        result = "Jarvis lecture"
         jarvis = threading.Thread(None, send2jarvis, None, (result, ))
         jarvis.start()
     except:
         logging.error("An error occured...")
 
-    result = "Jarvis lecture"
-    jarvis = threading.Thread(None, send2jarvis, None, (result, ))
-    jarvis.start()
     file(FLACFILE, 'w').write('')
     #file is empty, continue to listen
     pipe.set_state(gst.STATE_PLAYING)
