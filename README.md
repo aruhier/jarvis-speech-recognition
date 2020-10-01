@@ -1,13 +1,13 @@
 Jarvis-speech-recognition
 =========================
 
-Jarvis is a speech recognition assistant, which will use many API to get a maximum integration with every soft on your system.
+Jarvis is a speech recognition assistant, which will use many APIs to get  maximum integration with every application on your system.
 
-For the moment Jarvis can just controll (in a minimalistic way) Banshee to play music, stop it and change the song,
-and it's in french (but I will add a configuration file soon, to change easily the language).<br>
-Also, the algorithm to match what the user says is bad for the moment, but I'm working on it.
+At the moment Jarvis can just control (in a minimalistic way) Banshee to play music, stop it and change the song,
+and it's in french (but I will add a configuration file soon, to change the language easily).<br>
+Also, the algorithm to match what the user says is bad at the moment, but I'm working on it.
 
-For the speech recognition, it uses Google Speech or PocketSphinx, but I can not get good results with PocketSphinx for the moment,
+For the speech recognition, it uses Google Speech or PocketSphinx, but I can not get good results with PocketSphinx at the moment,
 so I advise you to use Google Speech.
 
 
@@ -41,7 +41,7 @@ Dependencies :
 How to :
 --------
 
-For the moment there are 3 ways to use Jarvis :
+At the moment there are 3 ways to use Jarvis :
 <ul>
   <li><b>Text mode :</b> launch "jarvis.py" and interact with Jarvis by typing,</li>
   <li><b>Speech Recognition using Google Speech :</b> launch "google-speech.py" and interact with Jarvis by voice,</li>
