@@ -1,13 +1,13 @@
 Jarvis-speech-recognition
 =========================
 
-Jarvis is a speech recognition assistant, which will use many APIs to get  maximum integration with every application on your system.
+Jarvis is a speech recognition assistant, which will use many APIs to get maximum integration with every application on your system.
 
 At the moment Jarvis can just control (in a minimalistic way) Banshee to play music, stop it and change the song,
 and it's in french (but I will add a configuration file soon, to change the language easily).<br>
 Also, the algorithm to match what the user says is bad at the moment, but I'm working on it.
 
-For the speech recognition, it uses Google Speech or PocketSphinx, but I can not get good results with PocketSphinx at the moment,
+For speech recognition, it uses Google Speech or PocketSphinx, but I can not get good results with PocketSphinx at the moment,
 so I advise you to use Google Speech.
 
 
